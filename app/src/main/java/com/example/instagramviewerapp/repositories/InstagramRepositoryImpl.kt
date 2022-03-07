@@ -16,7 +16,7 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
             override fun onSuccess(data: InstagramMediaPostData) {
                 data.data.forEach { post ->
                     socialMediaPosts.add(
-                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.media_type.toMediaTypeEnum(),post.timestamp.toString())
+                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.media_type.toMediaTypeEnum(),Utils.formatDateFromISO8601(post.timestamp.toString()))
                     )
                 }
 
@@ -26,7 +26,6 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
             override fun onFailed(error: ErrorResponse) {
                 listener.onFailed(error)
             }
-
         })
     }
 
@@ -36,7 +35,7 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
             override fun onSuccess(data: InstagramMediaPostData) {
                 data.data.forEach { post ->
                     socialMediaPosts.add(
-                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.media_type.toMediaTypeEnum(),Utils.formatDateFromISO8601(post.timestamp.toString()))
+                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.media_type.toMediaTypeEnum(), Utils.formatDateFromISO8601(post.timestamp.toString()))
                     )
                 }
 

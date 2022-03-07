@@ -78,7 +78,8 @@ class PostListFragment: Fragment(), PostsAdapter.IOnPostClickListener {
         if (post.mediaType == MediaTypeEnum.CAROUSEL_ALBUM) {
             activity?.addFragmentOnTop(PostDetailsFragment(post), Constants.POST_DETAILS_SCREEN_TAG)
         } else {
-            Toast.makeText(requireActivity(), "This Post is not a Carousel Album.", Toast.LENGTH_LONG).show()
+            //TODO this isnt working
+            Toast.makeText(activity, "This Post is not a Carousel Album.", Toast.LENGTH_SHORT).show()
         }
     }
 }

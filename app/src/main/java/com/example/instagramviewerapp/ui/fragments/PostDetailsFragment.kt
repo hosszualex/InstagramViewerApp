@@ -7,23 +7,28 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.SnapHelper
 import com.example.instagramviewerapp.databinding.FragmentPostDetailsBinding
 import com.example.instagramviewerapp.models.SocialMediaPost
-import com.example.instagramviewerapp.ui.adapters.PostsAdapter
+import com.example.instagramviewerapp.ui.adapters.PostImageAdapter
 import com.example.instagramviewerapp.ui.dialogs.LoadingDialog
 import com.example.instagramviewerapp.viewmodels.PostDetailsViewModel
+
 
 class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
     private lateinit var binding: FragmentPostDetailsBinding
     private lateinit var viewModel: PostDetailsViewModel
-    private var rootView: View? = null
-    private lateinit var adapter: PostsAdapter
+    private lateinit var adapter: PostImageAdapter
     private lateinit var loadingDialog: LoadingDialog
+    private var rootView: View? = null
 
     private val onGetPosts = Observer<List<SocialMediaPost>> { posts ->
         if (!this::adapter.isInitialized) {
-            adapter = PostsAdapter()
-            binding.rvPosts.adapter = adapter
+            adapter = PostImageAdapter()
+            val helper: SnapHelper = LinearSnapHelper()
+            helper.attachToRecyclerView(binding.rvImages)
+            binding.rvImages.adapter = adapter
         }
         adapter.setDataSource(posts)
     }
@@ -50,12 +55,13 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
         if (rootView == null) {
             binding = FragmentPostDetailsBinding.inflate(inflater)
             binding.lifecycleOwner = this
+            binding.item = post
             binding.executePendingBindings()
             rootView = binding.root
             loadingDialog = LoadingDialog(requireActivity())
         }
 
-        return binding.root
+        return rootView
     }
 
     override fun onResume() {
