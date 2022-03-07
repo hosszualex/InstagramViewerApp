@@ -1,10 +1,13 @@
 package com.example.instagramviewerapp.ui.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instagramviewerapp.databinding.SocialMediaPostItemBinding
 import com.example.instagramviewerapp.models.SocialMediaPost
+import com.example.instagramviewerapp.utils.PostsDiffUtil
 
 class PostsAdapter(private val clickListener: IOnPostClickListener): RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
 
@@ -16,11 +19,13 @@ class PostsAdapter(private val clickListener: IOnPostClickListener): RecyclerVie
         return ViewHolder(binding)
     }
 
-    fun setDataSource(items: List<SocialMediaPost>) {
-        this.items = items
-        notifyDataSetChanged()
+    fun setDataSource(newItems: List<SocialMediaPost>) {
+        val diffUtil = PostsDiffUtil(this.items, newItems)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        this.items = newItems
+        diffResults.dispatchUpdatesTo(this)
     }
-
+    
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

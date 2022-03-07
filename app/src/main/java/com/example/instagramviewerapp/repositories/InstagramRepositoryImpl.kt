@@ -14,7 +14,7 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
             override fun onSuccess(data: InstagramMediaPostData) {
                 data.data.forEach { post ->
                     socialMediaPosts.add(
-                        SocialMediaPost(post.caption, post.media_url.toString(), post.timestamp.toString())
+                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.timestamp.toString())
                     )
                 }
 
@@ -34,7 +34,7 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
             override fun onSuccess(data: InstagramMediaPostData) {
                 data.data.forEach { post ->
                     socialMediaPosts.add(
-                        SocialMediaPost(post.caption, post.media_url.toString(), post.timestamp.toString())
+                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.timestamp.toString())
                     )
                 }
 
