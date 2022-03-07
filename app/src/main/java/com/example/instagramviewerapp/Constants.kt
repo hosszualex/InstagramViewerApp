@@ -8,4 +8,7 @@ object Constants {
     const val POST_FIELD = "id,caption,media_type,media_url,permalink,thumbnail_url,username,timestamp,children"
     const val CHILDREN_FIELD = "id,media_type,media_url,permalink,thumbnail_url,username,timestamp"
     const val FORMAT_OF_DATE = "dd MMMM yyyy"
+
+    const val POST_LIST_SCREEN_TAG = "POST_LIST_SCREEN_TAG"
+    const val POST_DETAILS_SCREEN_TAG = "POST_DETAILS_SCREEN_TAG"
 }

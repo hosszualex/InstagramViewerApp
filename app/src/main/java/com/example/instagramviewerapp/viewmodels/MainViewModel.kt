@@ -17,40 +17,4 @@ class MainViewModel : ViewModel() {
     //TODO make the loading thing
     val isBusy: LiveData<Boolean>
         get() = _isBusy
-    private val _onGetPosts = MutableLiveData<List<SocialMediaPost>>()
-    val onGetPosts: LiveData<List<SocialMediaPost>>
-        get() = _onGetPosts
-
-
-    fun onRetrievePosts() {
-        _isBusy.value = true
-        socialMediaRepository.getPosts(object : ISocialMediaPostsRepository.IOnGetSocialMediaPosts {
-            override fun onSuccess(posts: List<SocialMediaPost>) {
-                _onGetPosts.value = posts
-                _isBusy.value = false
-            }
-
-            override fun onFailed(error: ErrorResponse) {
-                Log.d("====LOG===>", "IS NOT GOOD")
-                _isBusy.value = false
-            }
-        })
-    }
-
-    fun onRetrieveChildren(postId: String) {
-        _isBusy.value = true
-        socialMediaRepository.getChildrenForPost(
-            postId,
-            object : ISocialMediaPostsRepository.IOnGetSocialMediaPosts {
-                override fun onSuccess(posts: List<SocialMediaPost>) {
-                    Log.d("====LOG===>", "IS GOOD")
-                    _isBusy.value = false
-                }
-
-                override fun onFailed(error: ErrorResponse) {
-                    Log.d("====LOG===>", "IS NOT GOOD")
-                    _isBusy.value = false
-                }
-            })
-    }
 }

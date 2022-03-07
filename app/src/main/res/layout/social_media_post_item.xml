@@ -6,8 +6,6 @@
 
         <import type="android.view.View" />
 
-        <import type="com.example.instagramviewerapp.utils.Utils"/>
-
         <variable
             name="item"
             type="com.example.instagramviewerapp.models.SocialMediaPost" />
@@ -24,7 +22,7 @@
         android:layout_marginVertical="4dp"
         app:cardCornerRadius="8dp"
         android:backgroundTint="#50C878"
-        android:onClick="@{() -> listener.onPostClicked()}">
+        android:onClick="@{() -> listener.onPostClicked(item)}">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -55,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:visibility="@{item.postDate == null ? View.GONE : View.VISIBLE}"
-                android:text="@{`Date of posting: ` + Utils.INSTANCE.formatDateFromISO8601(item.postDate)}"
+                android:text="@{`Date of posting: ` + item.postDate}"
                 android:textColor="@color/black" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

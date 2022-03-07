@@ -9,7 +9,7 @@ import com.example.instagramviewerapp.databinding.SocialMediaPostItemBinding
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.utils.PostsDiffUtil
 
-class PostsAdapter(private val clickListener: IOnPostClickListener): RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
+class PostsAdapter(private val clickListener: IOnPostClickListener? = null): RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
 
     private var items: List<SocialMediaPost> = ArrayList()
 
@@ -41,7 +41,7 @@ class PostsAdapter(private val clickListener: IOnPostClickListener): RecyclerVie
     }
 
     interface IOnPostClickListener {
-        fun onPostClicked()
+        fun onPostClicked(post: SocialMediaPost)
     }
 
 

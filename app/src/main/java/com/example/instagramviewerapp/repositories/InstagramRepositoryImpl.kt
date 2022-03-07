@@ -5,6 +5,8 @@ import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.models.InstagramMediaPostData
 import com.example.instagramviewerapp.services.IOnGetInstagramPosts
 import com.example.instagramviewerapp.services.InstagramRetrofitService
+import com.example.instagramviewerapp.toMediaTypeEnum
+import com.example.instagramviewerapp.utils.Utils
 
 class InstagramRepositoryImpl: ISocialMediaPostsRepository {
 
@@ -14,7 +16,7 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
             override fun onSuccess(data: InstagramMediaPostData) {
                 data.data.forEach { post ->
                     socialMediaPosts.add(
-                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.timestamp.toString())
+                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.media_type.toMediaTypeEnum(),post.timestamp.toString())
                     )
                 }
 
@@ -34,7 +36,7 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
             override fun onSuccess(data: InstagramMediaPostData) {
                 data.data.forEach { post ->
                     socialMediaPosts.add(
-                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.timestamp.toString())
+                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.media_type.toMediaTypeEnum(),Utils.formatDateFromISO8601(post.timestamp.toString()))
                     )
                 }
 
