@@ -6,6 +6,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.example.instagramviewerapp.utils.Utils"/>
+
         <variable
             name="item"
             type="com.example.instagramviewerapp.models.SocialMediaPost" />
@@ -52,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:visibility="@{item.postDate == null ? View.GONE : View.VISIBLE}"
-                android:text="@{`Date of posting: ` + item.postDate}"
+                android:text="@{`Date of posting: ` + DateUtils.INSTANCE.formatDateFromISO8601(item.postDate)}"
                 android:textColor="@color/black" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
