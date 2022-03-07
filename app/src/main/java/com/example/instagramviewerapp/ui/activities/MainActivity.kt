@@ -2,18 +2,18 @@ package com.example.instagramviewerapp.ui.activities
 
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.instagramviewerapp.MainViewModel
+import com.example.instagramviewerapp.viewmodels.MainViewModel
 import com.example.instagramviewerapp.R
 import com.example.instagramviewerapp.databinding.ActivityMainBinding
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.ui.adapters.PostsAdapter
 import com.example.instagramviewerapp.ui.dialogs.LoadingDialog
 
-class MainActivity : AppCompatActivity(), PostsAdapter.IOnPostClickListener {
+class MainActivity : FragmentActivity(), PostsAdapter.IOnPostClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel

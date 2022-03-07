@@ -25,7 +25,7 @@ class PostsAdapter(private val clickListener: IOnPostClickListener): RecyclerVie
         this.items = newItems
         diffResults.dispatchUpdatesTo(this)
     }
-    
+
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
