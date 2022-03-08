@@ -15,13 +15,7 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
         val socialMediaPosts = mutableListOf<SocialMediaPost>()
         InstagramRetrofitService.getPosts(Constants.ACCESS_TOKEN, object: IOnGetInstagramPosts{
             override fun onSuccess(data: InstagramMediaPostData) {
-                data.data.forEach { post ->
-                    socialMediaPosts.add(
-                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.media_type.toMediaTypeEnum(),Utils.formatDateFromISO8601(post.timestamp.toString()))
-                    )
-                }
-
-               listener.onSuccess(socialMediaPosts.toList())
+                handleSuccessCase(data, socialMediaPosts, listener)
             }
 
             override fun onFailed(error: ErrorResponse) {
@@ -34,18 +28,32 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
         val socialMediaPosts = mutableListOf<SocialMediaPost>()
         InstagramRetrofitService.getChildrenForPost(Constants.ACCESS_TOKEN, postId, object: IOnGetInstagramPosts{
             override fun onSuccess(data: InstagramMediaPostData) {
-                data.data.forEach { post ->
-                    socialMediaPosts.add(
-                        SocialMediaPost(post.id, post.caption, post.media_url.toString(), post.media_type.toMediaTypeEnum(), Utils.formatDateFromISO8601(post.timestamp.toString()))
-                    )
-                }
-
-                listener.onSuccess(socialMediaPosts.toList())
+                handleSuccessCase(data, socialMediaPosts, listener)
             }
 
             override fun onFailed(error: ErrorResponse) {
                 listener.onFailed(error)
             }
         })
+    }
+
+    private fun handleSuccessCase(
+        data: InstagramMediaPostData,
+        socialMediaPosts: MutableList<SocialMediaPost>,
+        listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts
+    ) {
+        data.data.forEach { post ->
+            socialMediaPosts.add(
+                SocialMediaPost(
+                    post.id,
+                    post.caption,
+                    post.media_url.toString(),
+                    post.media_type.toMediaTypeEnum(),
+                    Utils.formatDateFromISO8601(post.timestamp.toString())
+                )
+            )
+        }
+        socialMediaPosts.sortByDescending { it.postDate }
+        listener.onSuccess(socialMediaPosts.toList())
     }
 }

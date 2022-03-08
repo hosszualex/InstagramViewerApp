@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.view.View" />
+
+        <import type="com.example.instagramviewerapp.enums.MediaTypeEnum"/>
 
         <variable
             name="item"
@@ -21,7 +24,7 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginVertical="4dp"
         app:cardCornerRadius="8dp"
-        android:backgroundTint="#50C878"
+        android:backgroundTint="@color/emeraldGreen"
         android:onClick="@{() -> listener.onPostClicked(item)}">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -36,25 +39,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:foreground="@{item.mediaType == MediaTypeEnum.CAROUSEL_ALBUM ? @drawable/ic_carousel_album : null}"
+                android:foregroundGravity="bottom"
                 android:srcUrl="@{item.mediaURL}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvCaption"
+                style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="2dp"
                 android:visibility="@{item.caption == null ? View.GONE : View.VISIBLE}"
                 android:text="@{item.caption}"
-                android:textColor="@color/black" />
+                tools:text="This is a caption"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvPostedDate"
+                style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="4dp"
                 android:visibility="@{item.postDate == null ? View.GONE : View.VISIBLE}"
-                android:text="@{`Date of posting: ` + item.postDate}"
-                android:textColor="@color/black" />
+                android:text="@{item.postDate}"
+                tools:text="20 July 2018"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.cardview.widget.CardView>

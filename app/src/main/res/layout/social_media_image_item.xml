@@ -21,7 +21,7 @@
         android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="4dp"
         app:cardCornerRadius="8dp"
-        android:backgroundTint="#50C878">
+        android:backgroundTint="@color/emeraldGreen">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

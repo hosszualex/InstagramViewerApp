@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentActivity
 import com.example.instagramviewerapp.Constants
 import com.example.instagramviewerapp.R
 import com.example.instagramviewerapp.databinding.ActivityMainBinding
+import com.example.instagramviewerapp.extensions.addFragmentOnTop
+import com.example.instagramviewerapp.extensions.lastFragment
 import com.example.instagramviewerapp.ui.fragments.PostListFragment
 
 class MainActivity : FragmentActivity(){

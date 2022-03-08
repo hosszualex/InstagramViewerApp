@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.SnapHelper
 import com.example.instagramviewerapp.databinding.FragmentPostDetailsBinding
+import com.example.instagramviewerapp.models.ErrorResponse
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.ui.adapters.PostImageAdapter
 import com.example.instagramviewerapp.ui.dialogs.LoadingDialog
@@ -45,6 +47,10 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
         }
     }
 
+    private val onError = Observer<ErrorResponse> { onError ->
+        Toast.makeText(requireContext(), "Error Message: " + onError.errorMessage + "\nError Code: " + onError.errorCode, Toast.LENGTH_LONG).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(PostDetailsViewModel::class.java)
@@ -55,10 +61,9 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (rootView == null) {
-            initializeScreen(inflater)
-        }
-
+        initializeScreen(inflater)
+        connectViewModel()
+        viewModel.onRetrieveChildren(post.id)
         return rootView
     }
 
@@ -72,16 +77,9 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
         loadingDialog = LoadingDialog(requireActivity())
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.isBusy.observe(this, isBusy)
-        viewModel.onGetPosts.observe(this, onGetPosts)
-        viewModel.onRetrieveChildren(post.id)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.isBusy.removeObserver(isBusy)
-        viewModel.onGetPosts.removeObserver(onGetPosts)
+    private fun connectViewModel() {
+        viewModel.isBusy.observe(viewLifecycleOwner, isBusy)
+        viewModel.onGetPosts.observe(viewLifecycleOwner, onGetPosts)
+        viewModel.onError.observe(viewLifecycleOwner, onError)
     }
 }

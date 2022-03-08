@@ -1,11 +1,11 @@
 package com.example.instagramviewerapp.viewmodels
 
-import android.util.Log
 import com.example.instagramviewerapp.models.ErrorResponse
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.repositories.ISocialMediaPostsRepository
 
 class PostListViewModel : BaseViewModel() {
+
     fun onRetrievePosts() {
         _isBusy.value = true
         socialMediaRepository.getPosts(object : ISocialMediaPostsRepository.IOnGetSocialMediaPosts {
@@ -15,9 +15,13 @@ class PostListViewModel : BaseViewModel() {
             }
 
             override fun onFailed(error: ErrorResponse) {
-                Log.d("====LOG===>", "IS NOT GOOD")
                 _isBusy.value = false
+                _onError.value = error
             }
         })
+    }
+
+    fun onRefreshedClicked() {
+        onRetrievePosts()
     }
 }
