@@ -18,7 +18,6 @@ import retrofit2.http.Query
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
-//TODO TEST ERROR CASES
 object InstagramRetrofitService {
     private val instagramApiService: IInstagramApiService
     var hasRetried = false
@@ -45,9 +44,9 @@ object InstagramRetrofitService {
                 .addInterceptor(logging)
         } else {
             OkHttpClient.Builder()
-        }.readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
+        }.readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
 
         okHttpClient = builder.build()
 
