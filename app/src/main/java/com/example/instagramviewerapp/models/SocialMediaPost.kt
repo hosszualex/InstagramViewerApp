@@ -1,3 +1,11 @@
 package com.example.instagramviewerapp.models
 
-data class SocialMediaPost (var id: String, var caption: String? = null, var mediaURL: String, var postDate: String)
+import com.example.instagramviewerapp.enums.MediaTypeEnum
+
+data class SocialMediaPost(
+    val id: String,
+    val caption: String? = null,
+    val mediaURL: String,
+    val mediaType: MediaTypeEnum,
+    val postDate: String
+)

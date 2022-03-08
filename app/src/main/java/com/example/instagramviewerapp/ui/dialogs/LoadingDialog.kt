@@ -1,6 +1,5 @@
 package com.example.instagramviewerapp.ui.dialogs
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.view.LayoutInflater
@@ -8,8 +7,7 @@ import com.example.instagramviewerapp.R
 import com.example.instagramviewerapp.databinding.DialogLoadingBinding
 
 
-class LoadingDialog(activity: Activity) {
-    private var activity: Activity? = null
+class LoadingDialog(private val activity: Activity) {
     private var dialog: AlertDialog? = null
     private lateinit var binding : DialogLoadingBinding
     val isShowing: Boolean
@@ -17,11 +15,6 @@ class LoadingDialog(activity: Activity) {
         return dialog?.isShowing == true
     }
 
-    init {
-        this.activity = activity
-    }
-
-    @SuppressLint("InflateParams")
     fun startDialog() {
         val builder = AlertDialog.Builder(activity, R.style.LoadingDialog)
         binding = DialogLoadingBinding.inflate(LayoutInflater.from(activity))

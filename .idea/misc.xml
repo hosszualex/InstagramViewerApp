@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Android/InstagramViewerApp/app/src/main/res/drawable/ic_carousel_album.xml" value="0.33697916666666666" />
         <entry key="..\:/Projects/Android/InstagramViewerApp/app/src/main/res/layout-v23/activity_main.xml" value="0.5234375" />
         <entry key="..\:/Projects/Android/InstagramViewerApp/app/src/main/res/layout/activity_main.xml" value="0.5234375" />
         <entry key="..\:/Projects/Android/InstagramViewerApp/app/src/main/res/layout/dialog_loading.xml" value="0.31666666666666665" />
+        <entry key="..\:/Projects/Android/InstagramViewerApp/app/src/main/res/layout/fragment_post_details.xml" value="0.3020833333333333" />
+        <entry key="..\:/Projects/Android/InstagramViewerApp/app/src/main/res/layout/fragment_post_list.xml" value="0.30416666666666664" />
+        <entry key="..\:/Projects/Android/InstagramViewerApp/app/src/main/res/layout/social_media_image_item.xml" value="0.38177083333333334" />
         <entry key="..\:/Projects/Android/InstagramViewerApp/app/src/main/res/layout/social_media_post_item.xml" value="0.5234375" />
         <entry key="..\:/Users/hossz/AndroidStudioProjects/InstagramViewerApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/hossz/AndroidStudioProjects/InstagramViewerApp/app/src/main/res/layout/instagram_post_item.xml" value="0.31666666666666665" />

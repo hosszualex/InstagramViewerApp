@@ -1,63 +1,73 @@
 package com.example.instagramviewerapp.ui.activities
 
 
+import android.content.DialogInterface
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.instagramviewerapp.MainViewModel
+import androidx.fragment.app.FragmentActivity
+import com.example.instagramviewerapp.Constants
 import com.example.instagramviewerapp.R
 import com.example.instagramviewerapp.databinding.ActivityMainBinding
-import com.example.instagramviewerapp.models.SocialMediaPost
-import com.example.instagramviewerapp.ui.adapters.PostsAdapter
-import com.example.instagramviewerapp.ui.dialogs.LoadingDialog
+import com.example.instagramviewerapp.ui.fragments.PostListFragment
 
-class MainActivity : AppCompatActivity(), PostsAdapter.IOnPostClickListener {
-
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: PostsAdapter
-    private lateinit var loadingDialog: LoadingDialog
+class MainActivity : FragmentActivity(){
+    val networks = mutableListOf<Network>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val binding : ActivityMainBinding= DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
-        loadingDialog = LoadingDialog(this)
-    }
+        addFragmentOnTop(PostListFragment(), Constants.POST_LIST_SCREEN_TAG)
 
-    private val isBusy = Observer<Boolean> { isBusy ->
-        if (isBusy) {
-            loadingDialog.startDialog()
-        } else {
-            loadingDialog.dismissDialog()
-        }
-    }
-
-    private val onGetPosts = Observer<List<SocialMediaPost>> { posts ->
-        if (!this::adapter.isInitialized) {
-            adapter = PostsAdapter(this)
-            binding.rvPosts.adapter = adapter
-        }
-        adapter.setDataSource(posts)
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .build()
+        val connectivityManager = getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        connectivityManager.requestNetwork(networkRequest, networkCallback)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.isBusy.observe(this, isBusy)
-        viewModel.onGetPosts.observe(this, onGetPosts)
-        viewModel.onRetrievePosts()
+        shouldDisplayNoNetworkError(networks.isEmpty())
+    }
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            networks.add(network)
+        }
+
+        override fun onLost(network: Network) {
+            super.onLost(network)
+            networks.remove(network)
+            shouldDisplayNoNetworkError(networks.isEmpty())
+        }
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.isBusy.removeObserver(isBusy)
-        viewModel.onGetPosts.removeObserver(onGetPosts)
+    override fun onBackPressed() {
+        val lastFragment = this.lastFragment()
+        if (lastFragment is PostListFragment) {
+            finish()
+        }else {
+            super.onBackPressed()
+        }
     }
 
-    override fun onPostClicked() {
-        //TODO("Not yet implemented")
+    private fun shouldDisplayNoNetworkError(shouldDisplay: Boolean) {
+        if (shouldDisplay) {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(getString(R.string.no_internet_connection_title))
+            builder.setMessage(getString(R.string.no_internet_connection_message))
+            builder.setPositiveButton(android.R.string.ok) { dialog: DialogInterface?, which: Int ->
+                dialog?.cancel()
+            }
+            builder.show()
+        }
     }
 }
