@@ -31,6 +31,12 @@ class PostsDiffUtil
             oldList[oldItemPosition].mediaURL != newList[newItemPosition].mediaURL -> {
                 false
             }
+            oldList[oldItemPosition].mediaType != newList[newItemPosition].mediaType -> {
+                false
+            }
+            oldList[oldItemPosition].postDate != newList[newItemPosition].postDate -> {
+                false
+            }
             else -> {
                 true
             }

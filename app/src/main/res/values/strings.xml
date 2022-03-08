@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Instagram Viewer App</string>
+    <string name="app_name">Instagram Viewer</string>
     <string name="no_internet_connection_title">No Internet Connection</string>
     <string name="no_internet_connection_message">Internet connection is required for this app to function as intended.</string>
     <string name="content_description_floating_button">Refreshes the current list of posts</string>
