@@ -42,6 +42,4 @@ class PostsAdapter(private val clickListener: IOnPostClickListener? = null): Rec
     interface IOnPostClickListener {
         fun onPostClicked(post: SocialMediaPost)
     }
-
-
 }
