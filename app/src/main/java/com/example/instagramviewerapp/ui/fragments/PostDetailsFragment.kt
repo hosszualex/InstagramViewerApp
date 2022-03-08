@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.instagramviewerapp.databinding.FragmentPostDetailsBinding
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.ui.adapters.PostImageAdapter
 import com.example.instagramviewerapp.ui.dialogs.LoadingDialog
+import com.example.instagramviewerapp.utils.SnapHelperOneByOne
 import com.example.instagramviewerapp.viewmodels.PostDetailsViewModel
 
 
@@ -26,7 +26,7 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
     private val onGetPosts = Observer<List<SocialMediaPost>> { posts ->
         if (!this::adapter.isInitialized) {
             adapter = PostImageAdapter()
-            val helper: SnapHelper = LinearSnapHelper()
+            val helper: SnapHelper = SnapHelperOneByOne()
             helper.attachToRecyclerView(binding.rvImages)
             binding.rvImages.adapter = adapter
         }
@@ -56,6 +56,7 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
             binding = FragmentPostDetailsBinding.inflate(inflater)
             binding.lifecycleOwner = this
             binding.item = post
+            binding.viewModel = viewModel
             binding.executePendingBindings()
             rootView = binding.root
             loadingDialog = LoadingDialog(requireActivity())

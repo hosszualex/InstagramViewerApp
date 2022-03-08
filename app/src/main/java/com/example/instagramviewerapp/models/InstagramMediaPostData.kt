@@ -1,6 +1,5 @@
 package com.example.instagramviewerapp.models
 
-//TODO Try to make this generic
 data class InstagramMediaPostData(
     val data: ArrayList<GetPostsResponse>,
     val paging: PagingResponse?

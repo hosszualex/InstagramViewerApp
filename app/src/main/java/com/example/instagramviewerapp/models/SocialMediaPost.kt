@@ -1,6 +1,6 @@
 package com.example.instagramviewerapp.models
 
-import com.example.instagramviewerapp.MediaTypeEnum
+import com.example.instagramviewerapp.enums.MediaTypeEnum
 
 data class SocialMediaPost(
     val id: String,

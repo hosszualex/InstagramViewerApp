@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.instagramviewerapp.viewmodels.MainViewModel"/>
+            type="com.example.instagramviewerapp.viewmodels.PostListViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,4 +1,4 @@
-package com.example.instagramviewerapp
+package com.example.instagramviewerapp.enums
 
 enum class MediaTypeEnum {
     IMAGE,

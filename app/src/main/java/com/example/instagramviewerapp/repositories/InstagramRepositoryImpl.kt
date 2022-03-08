@@ -1,11 +1,11 @@
 package com.example.instagramviewerapp.repositories
 
+import com.example.instagramviewerapp.enums.toMediaTypeEnum
 import com.example.instagramviewerapp.models.ErrorResponse
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.models.InstagramMediaPostData
 import com.example.instagramviewerapp.services.IOnGetInstagramPosts
 import com.example.instagramviewerapp.services.InstagramRetrofitService
-import com.example.instagramviewerapp.toMediaTypeEnum
 import com.example.instagramviewerapp.utils.Utils
 
 class InstagramRepositoryImpl: ISocialMediaPostsRepository {
