@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.instagramviewerapp.models.ErrorResponse
 import com.example.instagramviewerapp.models.SocialMediaPost
-import com.example.instagramviewerapp.repositories.ISocialMediaPostsRepository
-import com.example.instagramviewerapp.repositories.InstagramRepositoryImpl
 
 abstract class BaseViewModel : ViewModel() {
-    protected var socialMediaRepository: ISocialMediaPostsRepository = InstagramRepositoryImpl()
     protected val _isBusy = MutableLiveData<Boolean>()
     val isBusy: LiveData<Boolean>
         get() = _isBusy

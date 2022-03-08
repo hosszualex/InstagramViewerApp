@@ -3,10 +3,12 @@ package com.example.instagramviewerapp.viewmodels
 import com.example.instagramviewerapp.models.ErrorResponse
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.repositories.ISocialMediaPostsRepository
+import com.example.instagramviewerapp.repositories.InstagramRepositoryImpl
 
 class PostListViewModel : BaseViewModel() {
+    private val socialMediaRepository: ISocialMediaPostsRepository = InstagramRepositoryImpl()
 
-    fun onRetrievePosts() {
+    fun retrievePosts() {
         _isBusy.value = true
         socialMediaRepository.getPosts(object : ISocialMediaPostsRepository.IOnGetSocialMediaPosts {
             override fun onSuccess(posts: List<SocialMediaPost>) {
@@ -22,6 +24,7 @@ class PostListViewModel : BaseViewModel() {
     }
 
     fun onRefreshedClicked() {
-        onRetrievePosts()
+        retrievePosts()
     }
+
 }
