@@ -12,9 +12,8 @@ import com.example.instagramviewerapp.databinding.FragmentPostDetailsBinding
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.ui.adapters.PostImageAdapter
 import com.example.instagramviewerapp.ui.dialogs.LoadingDialog
-import com.example.instagramviewerapp.utils.SnapHelperOneByOne
+import com.example.instagramviewerapp.utils.SnapHelperOneItem
 import com.example.instagramviewerapp.viewmodels.PostDetailsViewModel
-
 
 class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
     private lateinit var binding: FragmentPostDetailsBinding
@@ -26,7 +25,7 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
     private val onGetPosts = Observer<List<SocialMediaPost>> { posts ->
         if (!this::adapter.isInitialized) {
             adapter = PostImageAdapter()
-            val helper: SnapHelper = SnapHelperOneByOne()
+            val helper: SnapHelper = SnapHelperOneItem()
             helper.attachToRecyclerView(binding.rvImages)
             binding.rvImages.adapter = adapter
         }

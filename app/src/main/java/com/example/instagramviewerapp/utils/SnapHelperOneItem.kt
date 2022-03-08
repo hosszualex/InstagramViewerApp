@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller.ScrollVectorProvider
 
 
-class SnapHelperOneByOne : LinearSnapHelper() {
+class SnapHelperOneItem : LinearSnapHelper() {
     override fun findTargetSnapPosition(
         layoutManager: RecyclerView.LayoutManager,
         velocityX: Int,
