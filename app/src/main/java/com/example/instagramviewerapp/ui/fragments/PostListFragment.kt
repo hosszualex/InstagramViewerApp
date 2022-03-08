@@ -12,7 +12,7 @@ import com.example.instagramviewerapp.Constants
 import com.example.instagramviewerapp.databinding.FragmentPostListBinding
 import com.example.instagramviewerapp.enums.MediaTypeEnum
 import com.example.instagramviewerapp.models.SocialMediaPost
-import com.example.instagramviewerapp.ui.activities.addFragmentOnTop
+import com.example.instagramviewerapp.ui.activities.addFragmentOnTopWithAnimationLeftToRight
 import com.example.instagramviewerapp.ui.adapters.PostsAdapter
 import com.example.instagramviewerapp.ui.dialogs.LoadingDialog
 import com.example.instagramviewerapp.viewmodels.PostListViewModel
@@ -24,20 +24,24 @@ class PostListFragment: Fragment(), PostsAdapter.IOnPostClickListener {
     private lateinit var loadingDialog: LoadingDialog
     private var rootView: View? = null
 
+    private val onGetPosts = Observer<List<SocialMediaPost>> { posts ->
+        if (!this::adapter.isInitialized) {
+            initializeAdapter()
+        }
+        adapter.setDataSource(posts)
+    }
+
+    private fun initializeAdapter() {
+        adapter = PostsAdapter(this)
+        binding.rvPosts.adapter = adapter
+    }
+
     private val isBusy = Observer<Boolean> { isBusy ->
         if (isBusy) {
             loadingDialog.startDialog()
         } else {
             loadingDialog.dismissDialog()
         }
-    }
-
-    private val onGetPosts = Observer<List<SocialMediaPost>> { posts ->
-        if (!this::adapter.isInitialized) {
-            adapter = PostsAdapter(this)
-            binding.rvPosts.adapter = adapter
-        }
-        adapter.setDataSource(posts)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,15 +55,19 @@ class PostListFragment: Fragment(), PostsAdapter.IOnPostClickListener {
         savedInstanceState: Bundle?
     ): View? {
         if (rootView == null) {
-            binding = FragmentPostListBinding.inflate(inflater)
-            binding.lifecycleOwner = this
-            binding.viewModel = viewModel
-            binding.executePendingBindings()
-            rootView = binding.root
-            loadingDialog = LoadingDialog(requireActivity())
+            initializeScreen(inflater)
         }
 
         return rootView
+    }
+
+    private fun initializeScreen(inflater: LayoutInflater) {
+        binding = FragmentPostListBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        binding.executePendingBindings()
+        rootView = binding.root
+        loadingDialog = LoadingDialog(requireActivity())
     }
 
     override fun onResume() {
@@ -77,7 +85,7 @@ class PostListFragment: Fragment(), PostsAdapter.IOnPostClickListener {
 
     override fun onPostClicked(post: SocialMediaPost) {
         if (post.mediaType == MediaTypeEnum.CAROUSEL_ALBUM) {
-            activity?.addFragmentOnTop(PostDetailsFragment(post), Constants.POST_DETAILS_SCREEN_TAG)
+            activity?.addFragmentOnTopWithAnimationLeftToRight(PostDetailsFragment(post), Constants.POST_DETAILS_SCREEN_TAG)
         } else {
             Toast.makeText(activity, "This Post is not a Carousel Album.", Toast.LENGTH_SHORT).show()
         }

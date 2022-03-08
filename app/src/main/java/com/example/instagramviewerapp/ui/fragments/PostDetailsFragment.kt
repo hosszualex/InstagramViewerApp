@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,12 +25,16 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
 
     private val onGetPosts = Observer<List<SocialMediaPost>> { posts ->
         if (!this::adapter.isInitialized) {
-            adapter = PostImageAdapter()
-            val helper: SnapHelper = SnapHelperOneItem()
-            helper.attachToRecyclerView(binding.rvImages)
-            binding.rvImages.adapter = adapter
+            initializeAdapter()
         }
         adapter.setDataSource(posts)
+    }
+
+    private fun initializeAdapter() {
+        adapter = PostImageAdapter()
+        val helper: SnapHelper = SnapHelperOneItem()
+        helper.attachToRecyclerView(binding.rvImages)
+        binding.rvImages.adapter = adapter
     }
 
     private val isBusy = Observer<Boolean> { isBusy ->
@@ -39,7 +44,6 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
             loadingDialog.dismissDialog()
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,16 +56,20 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         if (rootView == null) {
-            binding = FragmentPostDetailsBinding.inflate(inflater)
-            binding.lifecycleOwner = this
-            binding.item = post
-            binding.viewModel = viewModel
-            binding.executePendingBindings()
-            rootView = binding.root
-            loadingDialog = LoadingDialog(requireActivity())
+            initializeScreen(inflater)
         }
 
         return rootView
+    }
+
+    private fun initializeScreen(inflater: LayoutInflater) {
+        binding = FragmentPostDetailsBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.item = post
+        binding.viewModel = viewModel
+        binding.executePendingBindings()
+        rootView = binding.root
+        loadingDialog = LoadingDialog(requireActivity())
     }
 
     override fun onResume() {
@@ -76,5 +84,4 @@ class PostDetailsFragment(private val post: SocialMediaPost): Fragment() {
         viewModel.isBusy.removeObserver(isBusy)
         viewModel.onGetPosts.removeObserver(onGetPosts)
     }
-
 }
