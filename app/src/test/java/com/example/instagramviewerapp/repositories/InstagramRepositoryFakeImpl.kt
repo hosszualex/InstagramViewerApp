@@ -7,7 +7,6 @@ import com.example.instagramviewerapp.models.GetPostsResponse
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.services.IInstagramRetrofitFakeService
 import com.example.instagramviewerapp.services.IInstagramRetrofitService
-import com.example.instagramviewerapp.services.InstagramRetrofitService
 import com.example.instagramviewerapp.utils.Utils
 
 class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
