@@ -11,11 +11,11 @@ import com.example.instagramviewerapp.utils.Utils
 
 class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
     override fun getPosts(listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts) {
-        val socialMediaPosts = mutableListOf<SocialMediaPost>()
         IInstagramRetrofitFakeService.getPosts(Constants.ACCESS_TOKEN, object:
             IInstagramRetrofitService.IOnGetInstagramPosts {
             override fun onSuccess(data: GetPostsResponse) {
-                handleSuccessCase(data, socialMediaPosts, listener)
+                val socialMediaPosts = getSocialMediaPostsFromResponse(data)
+                listener.onSuccess(socialMediaPosts)
             }
 
             override fun onFailed(error: ErrorResponse) {
@@ -28,11 +28,11 @@ class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
         postId: String,
         listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts
     ) {
-        val socialMediaPosts = mutableListOf<SocialMediaPost>()
         IInstagramRetrofitFakeService.getChildrenForPost(Constants.ACCESS_TOKEN, postId, object:
             IInstagramRetrofitService.IOnGetInstagramPosts {
             override fun onSuccess(data: GetPostsResponse) {
-                handleSuccessCase(data, socialMediaPosts, listener)
+                val socialMediaPosts = getSocialMediaPostsFromResponse(data)
+                listener.onSuccess(socialMediaPosts)
             }
 
             override fun onFailed(error: ErrorResponse) {
@@ -41,11 +41,8 @@ class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
         })
     }
 
-    private fun handleSuccessCase(
-        data: GetPostsResponse,
-        socialMediaPosts: MutableList<SocialMediaPost>,
-        listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts
-    ) {
+    private fun getSocialMediaPostsFromResponse(data: GetPostsResponse, ): List<SocialMediaPost> {
+        val socialMediaPosts = mutableListOf<SocialMediaPost>()
         data.data.forEach { post ->
             socialMediaPosts.add(
                 SocialMediaPost(
@@ -58,6 +55,6 @@ class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
             )
         }
         socialMediaPosts.sortByDescending { it.postDate }
-        listener.onSuccess(socialMediaPosts.toList())
+        return socialMediaPosts.toList()
     }
 }
