@@ -7,11 +7,15 @@ import com.example.instagramviewerapp.models.GetPostsResponse
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.services.IInstagramRetrofitFakeService
 import com.example.instagramviewerapp.services.IInstagramRetrofitService
+import com.example.instagramviewerapp.services.InstagramRetrofitService
 import com.example.instagramviewerapp.utils.Utils
 
 class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
+
+    private val retrofitService: IInstagramRetrofitService = IInstagramRetrofitFakeService
+
     override fun getPosts(listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts) {
-        IInstagramRetrofitFakeService.getPosts(Constants.ACCESS_TOKEN, object:
+        retrofitService.getPosts(Constants.ACCESS_TOKEN, object:
             IInstagramRetrofitService.IOnGetInstagramPosts {
             override fun onSuccess(data: GetPostsResponse) {
                 val socialMediaPosts = getSocialMediaPostsFromResponse(data)
@@ -28,7 +32,7 @@ class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
         postId: String,
         listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts
     ) {
-        IInstagramRetrofitFakeService.getChildrenForPost(Constants.ACCESS_TOKEN, postId, object:
+        retrofitService.getChildrenForPost(Constants.ACCESS_TOKEN, postId, object:
             IInstagramRetrofitService.IOnGetInstagramPosts {
             override fun onSuccess(data: GetPostsResponse) {
                 val socialMediaPosts = getSocialMediaPostsFromResponse(data)

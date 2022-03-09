@@ -23,7 +23,6 @@
             android:id="@+id/rvPosts"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:visibility="@{viewModel.isBusy() ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
