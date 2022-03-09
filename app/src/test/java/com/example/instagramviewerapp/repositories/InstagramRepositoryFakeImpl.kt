@@ -3,15 +3,16 @@ package com.example.instagramviewerapp.repositories
 import com.example.instagramviewerapp.Constants
 import com.example.instagramviewerapp.enums.toMediaTypeEnum
 import com.example.instagramviewerapp.models.ErrorResponse
-import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.models.GetPostsResponse
+import com.example.instagramviewerapp.models.SocialMediaPost
+import com.example.instagramviewerapp.services.IInstagramRetrofitFakeService
 import com.example.instagramviewerapp.services.IInstagramRetrofitService
 import com.example.instagramviewerapp.services.InstagramRetrofitService
 import com.example.instagramviewerapp.utils.Utils
 
-class InstagramRepositoryImpl: ISocialMediaPostsRepository {
+class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
 
-    private val retrofitService: IInstagramRetrofitService = InstagramRetrofitService
+    private val retrofitService: IInstagramRetrofitService = IInstagramRetrofitFakeService
 
     override fun getPosts(listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts) {
         retrofitService.getPosts(Constants.ACCESS_TOKEN, object:
@@ -27,7 +28,10 @@ class InstagramRepositoryImpl: ISocialMediaPostsRepository {
         })
     }
 
-    override fun getChildrenForPost(postId: String, listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts) {
+    override fun getChildrenForPost(
+        postId: String,
+        listener: ISocialMediaPostsRepository.IOnGetSocialMediaPosts
+    ) {
         retrofitService.getChildrenForPost(Constants.ACCESS_TOKEN, postId, object:
             IInstagramRetrofitService.IOnGetInstagramPosts {
             override fun onSuccess(data: GetPostsResponse) {

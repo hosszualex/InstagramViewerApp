@@ -61,7 +61,7 @@ class PostListFragment: Fragment(), PostsAdapter.IOnPostClickListener {
     ): View? {
         initializeScreen(inflater)
         connectViewModel()
-        viewModel.onRetrievePosts()
+        viewModel.retrievePosts()
         return rootView
     }
 

@@ -3,7 +3,7 @@ package com.example.instagramviewerapp.services
 import com.example.instagramviewerapp.BuildConfig
 import com.example.instagramviewerapp.Constants
 import com.example.instagramviewerapp.models.ErrorResponse
-import com.example.instagramviewerapp.models.InstagramMediaPostData
+import com.example.instagramviewerapp.models.GetPostsResponse
 import com.example.instagramviewerapp.models.RefreshTokenResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +18,7 @@ import retrofit2.http.Query
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
-object InstagramRetrofitService {
+object InstagramRetrofitService: IInstagramRetrofitService {
     private val instagramApiService: IInstagramApiService
     var hasRetried = false
 
@@ -64,26 +64,26 @@ object InstagramRetrofitService {
         fun getPosts(
             @Query("fields") fields: String,
             @Query("access_token") accessToken: String
-        ): Call<InstagramMediaPostData>
+        ): Call<GetPostsResponse>
 
         @GET("{postId}/children")
         fun getChildrenForPost(
             @Path("postId") postId: String,
             @Query("fields") fields: String,
             @Query("access_token") accessToken: String
-        ): Call<InstagramMediaPostData>
+        ): Call<GetPostsResponse>
     }
 
 
-    fun getPosts(accessToken: String, listener: IOnGetInstagramPosts) {
+    override fun getPosts(accessToken: String, listener: IInstagramRetrofitService.IOnGetInstagramPosts) {
         val request = instagramApiService.getPosts(
             Constants.POST_FIELD,
             accessToken
         )
-        request.enqueue(object : Callback<InstagramMediaPostData?> {
+        request.enqueue(object : Callback<GetPostsResponse?> {
             override fun onResponse(
-                call: Call<InstagramMediaPostData?>,
-                postResponse: Response<InstagramMediaPostData?>
+                call: Call<GetPostsResponse?>,
+                postResponse: Response<GetPostsResponse?>
             ) {
                 if (postResponse.isSuccessful) {
                     postResponse.body()?.let { listener.onSuccess(it) }
@@ -94,7 +94,7 @@ object InstagramRetrofitService {
                 }
             }
 
-            override fun onFailure(call: Call<InstagramMediaPostData?>, t: Throwable) {
+            override fun onFailure(call: Call<GetPostsResponse?>, t: Throwable) {
                 val errorResponse =
                     ErrorResponse(t.message.toString(), Constants.SERVER_CALL_FAILED_ERROR_CODE)
                 handlerError(errorResponse)
@@ -102,7 +102,7 @@ object InstagramRetrofitService {
 
             private fun handlerError(errorResponse: ErrorResponse) {
                 if (shouldRefreshToken(errorResponse)) {
-                    refreshToken(accessToken, object : IOnRefreshToken {
+                    refreshToken(accessToken, object : IInstagramRetrofitService.IOnRefreshToken {
                         override fun onSuccess(refreshedAccessToken: String) {
                             getPosts(refreshedAccessToken, listener)
                         }
@@ -119,20 +119,20 @@ object InstagramRetrofitService {
     }
 
 
-    fun getChildrenForPost(
+    override fun getChildrenForPost(
         accessToken: String,
         postId: String,
-        listener: IOnGetInstagramPosts
+        listener: IInstagramRetrofitService.IOnGetInstagramPosts
     ) {
         val request = instagramApiService.getChildrenForPost(
             postId,
             Constants.CHILDREN_FIELD,
             Constants.ACCESS_TOKEN
         )
-        request.enqueue(object : Callback<InstagramMediaPostData?> {
+        request.enqueue(object : Callback<GetPostsResponse?> {
             override fun onResponse(
-                call: Call<InstagramMediaPostData?>,
-                postResponse: Response<InstagramMediaPostData?>
+                call: Call<GetPostsResponse?>,
+                postResponse: Response<GetPostsResponse?>
             ) {
                 if (postResponse.isSuccessful) {
                     postResponse.body()?.let { listener.onSuccess(it) }
@@ -144,7 +144,7 @@ object InstagramRetrofitService {
                 }
             }
 
-            override fun onFailure(call: Call<InstagramMediaPostData?>, t: Throwable) {
+            override fun onFailure(call: Call<GetPostsResponse?>, t: Throwable) {
                 val errorResponse = ErrorResponse(
                     t.message.toString(),
                     Constants.SERVER_CALL_FAILED_ERROR_CODE
@@ -154,7 +154,7 @@ object InstagramRetrofitService {
 
             private fun handlerError(errorResponse: ErrorResponse) {
                 if (shouldRefreshToken(errorResponse)) {
-                    refreshToken(accessToken, object : IOnRefreshToken {
+                    refreshToken(accessToken, object : IInstagramRetrofitService.IOnRefreshToken {
                         override fun onSuccess(refreshedAccessToken: String) {
                             getChildrenForPost(refreshedAccessToken, postId, listener)
                         }
@@ -170,7 +170,7 @@ object InstagramRetrofitService {
         })
     }
 
-    private fun refreshToken(accessToken: String, listener: IOnRefreshToken) {
+    private fun refreshToken(accessToken: String, listener: IInstagramRetrofitService.IOnRefreshToken) {
         val request = instagramApiService.refreshToken(Constants.GRANT_TYPE, accessToken)
         request.enqueue(object : Callback<RefreshTokenResponse> {
             override fun onResponse(

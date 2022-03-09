@@ -3,9 +3,12 @@ package com.example.instagramviewerapp.viewmodels
 import com.example.instagramviewerapp.models.ErrorResponse
 import com.example.instagramviewerapp.models.SocialMediaPost
 import com.example.instagramviewerapp.repositories.ISocialMediaPostsRepository
+import com.example.instagramviewerapp.repositories.InstagramRepositoryImpl
 
 class PostDetailsViewModel : BaseViewModel() {
-    fun onRetrieveChildren(postId: String) {
+    private val socialMediaRepository: ISocialMediaPostsRepository = InstagramRepositoryImpl()
+
+    fun retrieveChildrenPosts(postId: String) {
         _isBusy.value = true
         socialMediaRepository.getChildrenForPost(
             postId,
@@ -23,6 +26,6 @@ class PostDetailsViewModel : BaseViewModel() {
     }
 
     fun onRefreshedClicked(postId: String) {
-        onRetrieveChildren(postId)
+        retrieveChildrenPosts(postId)
     }
 }

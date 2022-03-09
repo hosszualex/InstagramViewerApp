@@ -6,14 +6,9 @@ import android.view.LayoutInflater
 import com.example.instagramviewerapp.R
 import com.example.instagramviewerapp.databinding.DialogLoadingBinding
 
-
 class LoadingDialog(private val activity: Activity) {
     private var dialog: AlertDialog? = null
     private lateinit var binding : DialogLoadingBinding
-    val isShowing: Boolean
-        get() {
-        return dialog?.isShowing == true
-    }
 
     fun startDialog() {
         val builder = AlertDialog.Builder(activity, R.style.LoadingDialog)
