@@ -41,7 +41,7 @@ class InstagramRepositoryFakeImpl:ISocialMediaPostsRepository {
         })
     }
 
-    private fun getSocialMediaPostsFromResponse(data: GetPostsResponse, ): List<SocialMediaPost> {
+    private fun getSocialMediaPostsFromResponse(data: GetPostsResponse): List<SocialMediaPost> {
         val socialMediaPosts = mutableListOf<SocialMediaPost>()
         data.data.forEach { post ->
             socialMediaPosts.add(

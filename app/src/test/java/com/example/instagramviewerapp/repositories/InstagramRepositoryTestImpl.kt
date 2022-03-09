@@ -26,13 +26,28 @@ class InstagramRepositoryTestImpl {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var instagramRepository: ISocialMediaPostsRepository
-    private lateinit var handleSuccessCase: Method
+    private lateinit var method: Method
 
     @Before
-    fun setupViewModel() {
-//        instagramRepository = InstagramRepositoryImpl()
-//        handleSuccessCase = instagramRepository.javaClass.getDeclaredField("socialMediaRepository", GetPostsResponse::class.java, MutableList<SocialMediaPost>::class.java, ISocialMediaPostsRepository.IOnGetSocialMediaPosts::class.java)
-//        handleSuccessCase.isAccessible = true
+    fun setupRepository() {
+        instagramRepository = InstagramRepositoryImpl()
+        method = instagramRepository.javaClass.getDeclaredMethod("getSocialMediaPostsFromResponse", GetPostsResponse::class.java)
+        method.isAccessible = true
     }
 
+    @Test
+    fun getPostsFromResponseSuccessTest() {
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
+
+        val value = method(instagramRepository, FakeConstants.mockResponse)
+        Assert.assertEquals(FakeConstants.expectedMockValue, value)
+    }
+
+    @Test
+    fun getEmptyPostsFromResponseSuccessTest() {
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
+
+        val value = method(instagramRepository, GetPostsResponse(arrayListOf(), null))
+        Assert.assertEquals(true, (value as List<SocialMediaPost>).isEmpty())
+    }
 }
