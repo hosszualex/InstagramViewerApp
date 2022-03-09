@@ -7,7 +7,7 @@ import com.example.instagramviewerapp.FakeConstants
 import com.example.instagramviewerapp.models.ErrorResponse
 import com.example.instagramviewerapp.repositories.InstagramRepositoryFakeImpl
 import com.example.instagramviewerapp.services.IInstagramRetrofitFakeService
-import com.example.instagramviewerapp.viewmodels.PostListViewModel
+import com.example.instagramviewerapp.viewmodels.PostDetailsViewModel
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -19,19 +19,19 @@ import java.lang.reflect.Field
 
 @RunWith(AndroidJUnit4::class)
 @LooperMode(LooperMode.Mode.PAUSED)
-class PostListViewModelTest {
+class PostDetailsViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var postListViewModel: PostListViewModel
+    private lateinit var postDetailsViewModel: PostDetailsViewModel
     private lateinit var fakeSocialMediaRepository: Field
 
     @Before
     fun setupViewModel() {
-        postListViewModel = PostListViewModel()
-        fakeSocialMediaRepository = postListViewModel.javaClass.getDeclaredField("socialMediaRepository")
+        postDetailsViewModel = PostDetailsViewModel()
+        fakeSocialMediaRepository = postDetailsViewModel.javaClass.getDeclaredField("socialMediaRepository")
         fakeSocialMediaRepository.isAccessible = true
-        fakeSocialMediaRepository.set(postListViewModel, InstagramRepositoryFakeImpl())
+        fakeSocialMediaRepository.set(postDetailsViewModel, InstagramRepositoryFakeImpl())
     }
 
     @Test
@@ -40,10 +40,9 @@ class PostListViewModelTest {
         IInstagramRetrofitFakeService.mockData = FakeConstants.mockResponse
         IInstagramRetrofitFakeService.responseCode = 200
 
-        postListViewModel.retrievePosts()
-
-        val value = postListViewModel.onGetPosts.value
-        Assert.assertEquals(FakeConstants.expectedMockValue, value)
+        postDetailsViewModel.retrieveChildrenPosts(FakeConstants.mockCarouselId)
+        val value = postDetailsViewModel.onGetPosts.value
+        Assert.assertEquals(FakeConstants.expectedMockChildrenValue, value)
     }
 
     @Test
@@ -51,9 +50,9 @@ class PostListViewModelTest {
         Shadows.shadowOf(Looper.getMainLooper()).idle()
         IInstagramRetrofitFakeService.responseCode = 400
 
-        postListViewModel.retrievePosts()
+        postDetailsViewModel.retrieveChildrenPosts(FakeConstants.mockCarouselId)
 
-        val error = postListViewModel.onError.value
+        val error = postDetailsViewModel.onError.value
         Assert.assertEquals(ErrorResponse("Server is unreachable", 400), error)
     }
 
@@ -62,9 +61,9 @@ class PostListViewModelTest {
         Shadows.shadowOf(Looper.getMainLooper()).idle()
         IInstagramRetrofitFakeService.responseCode = 190
 
-        postListViewModel.retrievePosts()
+        postDetailsViewModel.retrieveChildrenPosts(FakeConstants.mockCarouselId)
 
-        val error = postListViewModel.onError.value
+        val error = postDetailsViewModel.onError.value
         Assert.assertEquals(ErrorResponse("Access token has expired", 190), error)
     }
 
@@ -73,9 +72,9 @@ class PostListViewModelTest {
         Shadows.shadowOf(Looper.getMainLooper()).idle()
         IInstagramRetrofitFakeService.responseCode = 10
 
-        postListViewModel.retrievePosts()
+        postDetailsViewModel.retrieveChildrenPosts(FakeConstants.mockCarouselId)
 
-        val error = postListViewModel.onError.value
+        val error = postDetailsViewModel.onError.value
         Assert.assertEquals(ErrorResponse("API Permission Denied", 10), error)
     }
 
@@ -84,9 +83,9 @@ class PostListViewModelTest {
         Shadows.shadowOf(Looper.getMainLooper()).idle()
         IInstagramRetrofitFakeService.responseCode = 17
 
-        postListViewModel.retrievePosts()
+        postDetailsViewModel.retrieveChildrenPosts(FakeConstants.mockCarouselId)
 
-        val error = postListViewModel.onError.value
+        val error = postDetailsViewModel.onError.value
         Assert.assertEquals(ErrorResponse("API User Too Many Calls", 17), error)
     }
 
@@ -95,9 +94,9 @@ class PostListViewModelTest {
         Shadows.shadowOf(Looper.getMainLooper()).idle()
         IInstagramRetrofitFakeService.responseCode = 341
 
-        postListViewModel.retrievePosts()
+        postDetailsViewModel.retrieveChildrenPosts(FakeConstants.mockCarouselId)
 
-        val error = postListViewModel.onError.value
+        val error = postDetailsViewModel.onError.value
         Assert.assertEquals(ErrorResponse("Application limit reached", 341), error)
     }
 
@@ -106,9 +105,9 @@ class PostListViewModelTest {
         Shadows.shadowOf(Looper.getMainLooper()).idle()
         IInstagramRetrofitFakeService.responseCode = 368
 
-        postListViewModel.retrievePosts()
+        postDetailsViewModel.retrieveChildrenPosts(FakeConstants.mockCarouselId)
 
-        val error = postListViewModel.onError.value
+        val error = postDetailsViewModel.onError.value
         Assert.assertEquals(ErrorResponse("Temporarily blocked for policies violations", 368), error)
     }
 
