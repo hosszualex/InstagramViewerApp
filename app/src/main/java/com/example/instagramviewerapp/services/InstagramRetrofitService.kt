@@ -1,6 +1,6 @@
 package com.example.instagramviewerapp.services
 
-import com.example.instagramviewerapp.BuildConfig
+import androidx.databinding.ktx.BuildConfig
 import com.example.instagramviewerapp.Constants
 import com.example.instagramviewerapp.models.ErrorResponse
 import com.example.instagramviewerapp.models.GetPostsResponse
